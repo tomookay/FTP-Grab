@@ -28,57 +28,60 @@
         /// </summary>
         private void InitializeComponent()
         {
-            checkedListBox1 = new CheckedListBox();
+            clbIPAddresses = new CheckedListBox();
             button1 = new Button();
             btnAdd = new Button();
             btnRemove = new Button();
             grpBoxIPs = new GroupBox();
             statusStrip1 = new StatusStrip();
+            lblLocalPath = new ToolStripStatusLabel();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             selectLocalPathToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            lblLocalPath = new ToolStripStatusLabel();
             nudInterval = new NumericUpDown();
             lblIntervalTitle = new Label();
             label1 = new Label();
             fbdSelectPath = new FolderBrowserDialog();
+            progressBar1 = new ProgressBar();
             grpBoxIPs.SuspendLayout();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudInterval).BeginInit();
             SuspendLayout();
             // 
-            // checkedListBox1
+            // clbIPAddresses
             // 
-            checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Items.AddRange(new object[] { "172.168.1.1", "172.168.1.2", "172.168.1.3", "172.168.1.4", "172.168.1.5", "172.168.1.6", "172.168.1.7", "172.168.1.8", "172.168.1.9", "172.168.1.10" });
-            checkedListBox1.Location = new Point(34, 24);
-            checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new Size(297, 94);
-            checkedListBox1.TabIndex = 0;
+            clbIPAddresses.FormattingEnabled = true;
+            clbIPAddresses.Items.AddRange(new object[] { "172.168.1.1", "172.168.1.2", "172.168.1.3", "172.168.1.4", "172.168.1.5", "172.168.1.6", "172.168.1.7", "172.168.1.8", "172.168.1.9", "172.168.1.10" });
+            clbIPAddresses.Location = new Point(6, 24);
+            clbIPAddresses.Name = "clbIPAddresses";
+            clbIPAddresses.Size = new Size(426, 94);
+            clbIPAddresses.TabIndex = 0;
             // 
             // button1
             // 
-            button1.Location = new Point(34, 124);
+            button1.Location = new Point(6, 124);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 1;
             button1.Text = "Select All";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(175, 124);
+            btnAdd.Location = new Point(276, 124);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(75, 23);
             btnAdd.TabIndex = 2;
             btnAdd.Text = "Add";
             btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
             // btnRemove
             // 
-            btnRemove.Location = new Point(256, 124);
+            btnRemove.Location = new Point(357, 124);
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(75, 23);
             btnRemove.TabIndex = 3;
@@ -91,10 +94,10 @@
             grpBoxIPs.Controls.Add(btnRemove);
             grpBoxIPs.Controls.Add(btnAdd);
             grpBoxIPs.Controls.Add(button1);
-            grpBoxIPs.Controls.Add(checkedListBox1);
+            grpBoxIPs.Controls.Add(clbIPAddresses);
             grpBoxIPs.Location = new Point(12, 27);
             grpBoxIPs.Name = "grpBoxIPs";
-            grpBoxIPs.Size = new Size(388, 181);
+            grpBoxIPs.Size = new Size(438, 181);
             grpBoxIPs.TabIndex = 4;
             grpBoxIPs.TabStop = false;
             grpBoxIPs.Text = "IP Addresses";
@@ -107,6 +110,12 @@
             statusStrip1.Size = new Size(462, 22);
             statusStrip1.TabIndex = 5;
             statusStrip1.Text = "statusStrip1";
+            // 
+            // lblLocalPath
+            // 
+            lblLocalPath.Name = "lblLocalPath";
+            lblLocalPath.Size = new Size(106, 17);
+            lblLocalPath.Text = "No Path Selected...";
             // 
             // menuStrip1
             // 
@@ -127,25 +136,19 @@
             // selectLocalPathToolStripMenuItem
             // 
             selectLocalPathToolStripMenuItem.Name = "selectLocalPathToolStripMenuItem";
-            selectLocalPathToolStripMenuItem.Size = new Size(180, 22);
+            selectLocalPathToolStripMenuItem.Size = new Size(163, 22);
             selectLocalPathToolStripMenuItem.Text = "Select Local Path";
             selectLocalPathToolStripMenuItem.Click += selectLocalPathToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(163, 22);
             exitToolStripMenuItem.Text = "Exit";
-            // 
-            // lblLocalPath
-            // 
-            lblLocalPath.Name = "lblLocalPath";
-            lblLocalPath.Size = new Size(106, 17);
-            lblLocalPath.Text = "No Path Selected...";
             // 
             // nudInterval
             // 
-            nudInterval.Location = new Point(310, 239);
+            nudInterval.Location = new Point(288, 225);
             nudInterval.Maximum = new decimal(new int[] { 36000, 0, 0, 0 });
             nudInterval.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudInterval.Name = "nudInterval";
@@ -157,27 +160,34 @@
             // lblIntervalTitle
             // 
             lblIntervalTitle.AutoSize = true;
-            lblIntervalTitle.Location = new Point(220, 241);
+            lblIntervalTitle.Location = new Point(198, 227);
             lblIntervalTitle.Name = "lblIntervalTitle";
             lblIntervalTitle.Size = new Size(84, 15);
             lblIntervalTitle.TabIndex = 9;
             lblIntervalTitle.Text = "Search Interval";
-            lblIntervalTitle.Click += lblIntervalTitle_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(379, 241);
+            label1.Location = new Point(357, 227);
             label1.Name = "label1";
             label1.Size = new Size(45, 15);
             label1.TabIndex = 10;
             label1.Text = "second";
+            // 
+            // progressBar1
+            // 
+            progressBar1.Location = new Point(12, 383);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(438, 23);
+            progressBar1.TabIndex = 11;
             // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(462, 450);
+            Controls.Add(progressBar1);
             Controls.Add(label1);
             Controls.Add(lblIntervalTitle);
             Controls.Add(nudInterval);
@@ -187,7 +197,6 @@
             MainMenuStrip = menuStrip1;
             Name = "frmMain";
             Text = "FTP-Grab";
-            Load += frmMain_Load;
             grpBoxIPs.ResumeLayout(false);
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
@@ -200,7 +209,7 @@
 
         #endregion
 
-        private CheckedListBox checkedListBox1;
+        private CheckedListBox clbIPAddresses;
         private Button button1;
         private Button btnAdd;
         private Button btnRemove;
@@ -215,5 +224,6 @@
         private Label lblIntervalTitle;
         private Label label1;
         private FolderBrowserDialog fbdSelectPath;
+        private ProgressBar progressBar1;
     }
 }
