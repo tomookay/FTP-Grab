@@ -44,6 +44,8 @@
             label1 = new Label();
             fbdSelectPath = new FolderBrowserDialog();
             progressBar1 = new ProgressBar();
+            authToolStripMenuItem = new ToolStripMenuItem();
+            setToolStripMenuItem = new ToolStripMenuItem();
             grpBoxIPs.SuspendLayout();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
@@ -119,7 +121,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, authToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(462, 24);
@@ -136,14 +138,14 @@
             // selectLocalPathToolStripMenuItem
             // 
             selectLocalPathToolStripMenuItem.Name = "selectLocalPathToolStripMenuItem";
-            selectLocalPathToolStripMenuItem.Size = new Size(163, 22);
+            selectLocalPathToolStripMenuItem.Size = new Size(180, 22);
             selectLocalPathToolStripMenuItem.Text = "Select Local Path";
             selectLocalPathToolStripMenuItem.Click += selectLocalPathToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(163, 22);
+            exitToolStripMenuItem.Size = new Size(180, 22);
             exitToolStripMenuItem.Text = "Exit";
             // 
             // nudInterval
@@ -181,6 +183,19 @@
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(438, 23);
             progressBar1.TabIndex = 11;
+            // 
+            // authToolStripMenuItem
+            // 
+            authToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setToolStripMenuItem });
+            authToolStripMenuItem.Name = "authToolStripMenuItem";
+            authToolStripMenuItem.Size = new Size(45, 20);
+            authToolStripMenuItem.Text = "Auth";
+            // 
+            // setToolStripMenuItem
+            // 
+            setToolStripMenuItem.Name = "setToolStripMenuItem";
+            setToolStripMenuItem.Size = new Size(180, 22);
+            setToolStripMenuItem.Text = "Set";
             // 
             // frmMain
             // 
@@ -225,5 +240,7 @@
         private Label label1;
         private FolderBrowserDialog fbdSelectPath;
         private ProgressBar progressBar1;
+        private ToolStripMenuItem authToolStripMenuItem;
+        private ToolStripMenuItem setToolStripMenuItem;
     }
 }
