@@ -121,14 +121,12 @@
             statusStrip1.Size = new Size(462, 22);
             statusStrip1.TabIndex = 5;
             statusStrip1.Text = "statusStrip1";
-            statusStrip1.ItemClicked += statusStrip1_ItemClicked;
             // 
             // lblLocalPath
             // 
             lblLocalPath.Name = "lblLocalPath";
             lblLocalPath.Size = new Size(106, 17);
             lblLocalPath.Text = "No Path Selected...";
-            lblLocalPath.Click += lblLocalPath_Click;
             // 
             // menuStrip1
             // 
@@ -189,7 +187,6 @@
             nudInterval.TabIndex = 8;
             nudInterval.TextAlign = HorizontalAlignment.Center;
             nudInterval.Value = new decimal(new int[] { 5, 0, 0, 0 });
-            nudInterval.ValueChanged += nudInterval_ValueChanged_1;
             // 
             // lblIntervalTitle
             // 
@@ -215,7 +212,6 @@
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(438, 23);
             progressBar1.TabIndex = 11;
-            progressBar1.Click += progressBar1_Click;
             // 
             // btnStart
             // 
@@ -283,7 +279,6 @@
             MainMenuStrip = menuStrip1;
             Name = "frmMain";
             Text = "FTP-Grab";
-            Load += frmMain_Load;
             grpBoxIPs.ResumeLayout(false);
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();

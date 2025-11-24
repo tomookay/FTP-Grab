@@ -380,34 +380,5 @@ namespace FTP_Grab
             }
         }
 
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void progressBar1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblLocalPath_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void timerDownloadFTP_Tick_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void nudInterval_ValueChanged_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }
