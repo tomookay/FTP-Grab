@@ -147,22 +147,23 @@
             // selectLocalPathToolStripMenuItem
             // 
             selectLocalPathToolStripMenuItem.Name = "selectLocalPathToolStripMenuItem";
-            selectLocalPathToolStripMenuItem.Size = new Size(176, 22);
+            selectLocalPathToolStripMenuItem.Size = new Size(180, 22);
             selectLocalPathToolStripMenuItem.Text = "Select Local Path";
             selectLocalPathToolStripMenuItem.Click += selectLocalPathToolStripMenuItem_Click;
             // 
             // selectRemotePathToolStripMenuItem
             // 
             selectRemotePathToolStripMenuItem.Name = "selectRemotePathToolStripMenuItem";
-            selectRemotePathToolStripMenuItem.Size = new Size(176, 22);
+            selectRemotePathToolStripMenuItem.Size = new Size(180, 22);
             selectRemotePathToolStripMenuItem.Text = "Select Remote Path";
             selectRemotePathToolStripMenuItem.Click += selectRemotePathToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(176, 22);
+            exitToolStripMenuItem.Size = new Size(180, 22);
             exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // authToolStripMenuItem
             // 

@@ -1,4 +1,5 @@
 using Microsoft.VisualBasic;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace FTP_Grab
         private string _ftpUser = "anonymous";
         private string _ftpPass = "anonymous";
 
+        private const string RegBasePath = @"Software\FTP-Grab";
+
         public frmMain()
         {
             InitializeComponent();
@@ -37,9 +40,17 @@ namespace FTP_Grab
             // update timer interval when user changes value
             nudInterval.ValueChanged += NudInterval_ValueChanged;
 
+            // save when list check state changes (ItemCheck fires before state changes; invoke after)
+            clbIPAddresses.ItemCheck += ClbIPAddresses_ItemCheck;
+
+            // save on form close
+            this.FormClosing += FrmMain_FormClosing;
+
+            // load saved settings from registry
+            LoadSettingsFromRegistry();
+
             lblRemotePath.Text = _remotePath;
             lblLocalPath.Text = _LocalPath;
-
         }
 
         // Thread-safe wrapper to append log text to txbFTPLog with timestamp.
@@ -62,6 +73,7 @@ namespace FTP_Grab
             try
             {
                 timerDownloadFTP.Interval = Math.Max(1, (int)nudInterval.Value) * 1000;
+                SaveSettingsToRegistry();
             }
             catch
             {
@@ -75,6 +87,7 @@ namespace FTP_Grab
             if (clbIPAddresses.Items.Contains(NewItem) == false && NewItem != "")
             {
                 clbIPAddresses.Items.Add(NewItem);
+                SaveSettingsToRegistry();
             }
             else
             {
@@ -92,6 +105,8 @@ namespace FTP_Grab
             {
                 clbIPAddresses.SetItemChecked(clbIPAddresses.Items.IndexOf(item), true);
             }
+
+            SaveSettingsToRegistry();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -100,13 +115,16 @@ namespace FTP_Grab
             {
                 clbIPAddresses.Items.Remove(item);
             }
+
+            SaveSettingsToRegistry();
         }
 
         private void selectLocalPathToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fbdSelectPath.ShowDialog();
-             _LocalPath = fbdSelectPath.SelectedPath;
+            _LocalPath = fbdSelectPath.SelectedPath;
             lblLocalPath.Text = _LocalPath;
+            SaveSettingsToRegistry();
         }
 
         // Only store remote path and credentials here (don't start downloads).
@@ -137,6 +155,7 @@ namespace FTP_Grab
             Log("Remote path and credentials saved. Start the service to begin timed downloads.");
 
             lblRemotePath.Text = _remotePath;
+            SaveSettingsToRegistry();
         }
 
         // Start button handler (designer wired to btnStart_Click_1)
@@ -323,7 +342,7 @@ namespace FTP_Grab
         {
             var req = (FtpWebRequest)WebRequest.Create(directoryUrl);
             req.Method = WebRequestMethods.Ftp.ListDirectory;
-                           if (!string.IsNullOrEmpty(username))
+            if (!string.IsNullOrEmpty(username))
                 req.Credentials = new NetworkCredential(username, password);
             else
                 req.Credentials = new NetworkCredential("anonymous", "anonymous@example.com");
@@ -380,5 +399,114 @@ namespace FTP_Grab
             }
         }
 
+        // Registry persistence methods
+
+        private void LoadSettingsFromRegistry()
+        {
+            try
+            {
+                using (var key = Registry.CurrentUser.OpenSubKey(RegBasePath))
+                {
+                    if (key == null) return;
+
+                    var local = key.GetValue("LocalPath") as string;
+                    if (!string.IsNullOrEmpty(local))
+                    {
+                        _LocalPath = local;
+                        lblLocalPath.Text = _LocalPath;
+                    }
+
+                    var remote = key.GetValue("RemotePath") as string;
+                    if (!string.IsNullOrEmpty(remote))
+                    {
+                        _remotePath = remote;
+                        lblRemotePath.Text = _remotePath;
+                    }
+
+                    var user = key.GetValue("FtpUser") as string;
+                    if (user != null) _ftpUser = user;
+
+                    var pass = key.GetValue("FtpPass") as string;
+                    if (pass != null) _ftpPass = pass;
+
+                    var intervalObj = key.GetValue("SearchInterval");
+                    if (intervalObj != null && int.TryParse(intervalObj.ToString(), out int intervalVal))
+                    {
+                        if (intervalVal >= nudInterval.Minimum && intervalVal <= nudInterval.Maximum)
+                        {
+                            nudInterval.Value = intervalVal;
+                            timerDownloadFTP.Interval = Math.Max(1, intervalVal) * 1000;
+                        }
+                    }
+
+                    var ips = key.GetValue("IPAddresses") as string;
+                    if (!string.IsNullOrEmpty(ips))
+                    {
+                        clbIPAddresses.Items.Clear();
+                        var items = ips.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var it in items)
+                            clbIPAddresses.Items.Add(it);
+                    }
+
+                    var checkedIps = key.GetValue("IPChecked") as string;
+                    if (!string.IsNullOrEmpty(checkedIps))
+                    {
+                        var checks = checkedIps.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 0; i < clbIPAddresses.Items.Count; i++)
+                        {
+                            var val = clbIPAddresses.Items[i] as string;
+                            if (val != null && checks.Contains(val))
+                                clbIPAddresses.SetItemChecked(i, true);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Failed to load settings from registry: {ex.Message}");
+            }
+        }
+
+        private void SaveSettingsToRegistry()
+        {
+            try
+            {
+                using (var key = Registry.CurrentUser.CreateSubKey(RegBasePath))
+                {
+                    key.SetValue("LocalPath", lblLocalPath.Text ?? "", RegistryValueKind.String);
+                    key.SetValue("RemotePath", _remotePath ?? "", RegistryValueKind.String);
+                    key.SetValue("FtpUser", _ftpUser ?? "", RegistryValueKind.String);
+                    key.SetValue("FtpPass", _ftpPass ?? "", RegistryValueKind.String);
+                    key.SetValue("SearchInterval", (int)nudInterval.Value, RegistryValueKind.DWord);
+
+                    var ipItems = string.Join(";", clbIPAddresses.Items.OfType<string>());
+                    key.SetValue("IPAddresses", ipItems, RegistryValueKind.String);
+
+                    var ipChecked = string.Join(";", clbIPAddresses.CheckedItems.OfType<string>());
+                    key.SetValue("IPChecked", ipChecked, RegistryValueKind.String);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"Failed to save settings to registry: {ex.Message}");
+            }
+        }
+
+        private void ClbIPAddresses_ItemCheck(object? sender, ItemCheckEventArgs e)
+        {
+            // ItemCheck fires before the checked state is updated. Save after UI update.
+            this.BeginInvoke(new Action(() => SaveSettingsToRegistry()));
+        }
+
+        private void FrmMain_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            SaveSettingsToRegistry();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+
+        }
     }
 }
