@@ -43,6 +43,7 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             authToolStripMenuItem = new ToolStripMenuItem();
             setToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
             nudInterval = new NumericUpDown();
             lblIntervalTitle = new Label();
             label1 = new Label();
@@ -54,6 +55,7 @@
             statusStrip2 = new StatusStrip();
             lblRemotePath = new ToolStripStatusLabel();
             txbFTPLog = new TextBox();
+            aboutToolStripMenuItem1 = new ToolStripMenuItem();
             grpBoxIPs.SuspendLayout();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
@@ -125,12 +127,12 @@
             // lblLocalPath
             // 
             lblLocalPath.Name = "lblLocalPath";
-            lblLocalPath.Size = new Size(106, 17);
-            lblLocalPath.Text = "No Path Selected...";
+            lblLocalPath.Size = new Size(137, 17);
+            lblLocalPath.Text = "No Local Path Selected...";
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, authToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, authToolStripMenuItem, aboutToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(462, 24);
@@ -147,21 +149,21 @@
             // selectLocalPathToolStripMenuItem
             // 
             selectLocalPathToolStripMenuItem.Name = "selectLocalPathToolStripMenuItem";
-            selectLocalPathToolStripMenuItem.Size = new Size(180, 22);
+            selectLocalPathToolStripMenuItem.Size = new Size(176, 22);
             selectLocalPathToolStripMenuItem.Text = "Select Local Path";
             selectLocalPathToolStripMenuItem.Click += selectLocalPathToolStripMenuItem_Click;
             // 
             // selectRemotePathToolStripMenuItem
             // 
             selectRemotePathToolStripMenuItem.Name = "selectRemotePathToolStripMenuItem";
-            selectRemotePathToolStripMenuItem.Size = new Size(180, 22);
+            selectRemotePathToolStripMenuItem.Size = new Size(176, 22);
             selectRemotePathToolStripMenuItem.Text = "Select Remote Path";
             selectRemotePathToolStripMenuItem.Click += selectRemotePathToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(176, 22);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
@@ -177,6 +179,15 @@
             setToolStripMenuItem.Name = "setToolStripMenuItem";
             setToolStripMenuItem.Size = new Size(90, 22);
             setToolStripMenuItem.Text = "Set";
+            setToolStripMenuItem.Click += setToolStripMenuItem_Click;
+            // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
+            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem1 });
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(52, 20);
+            aboutToolStripMenuItem.Text = "About";
             // 
             // nudInterval
             // 
@@ -261,6 +272,13 @@
             txbFTPLog.Size = new Size(438, 94);
             txbFTPLog.TabIndex = 15;
             // 
+            // aboutToolStripMenuItem1
+            // 
+            aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
+            aboutToolStripMenuItem1.Size = new Size(180, 22);
+            aboutToolStripMenuItem1.Text = "About";
+            aboutToolStripMenuItem1.Click += aboutToolStripMenuItem1_Click;
+            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -278,6 +296,8 @@
             Controls.Add(menuStrip1);
             Controls.Add(grpBoxIPs);
             MainMenuStrip = menuStrip1;
+            MaximumSize = new Size(478, 489);
+            MinimumSize = new Size(478, 489);
             Name = "frmMain";
             Text = "FTP-Grab";
             grpBoxIPs.ResumeLayout(false);
@@ -319,5 +339,7 @@
         private StatusStrip statusStrip2;
         private ToolStripStatusLabel lblRemotePath;
         private TextBox txbFTPLog;
+        private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem1;
     }
 }

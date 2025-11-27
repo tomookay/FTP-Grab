@@ -140,22 +140,6 @@ namespace FTP_Grab
             }
             _remotePath = remote.Trim();
 
-            // Ask for optional credentials (leave blank for anonymous)
-            string user = Interaction.InputBox("Enter FTP username (leave blank for anonymous):", "FTP Username", _ftpUser, -1, -1);
-            string pass = "";
-            if (!string.IsNullOrEmpty(user))
-            {
-                pass = Interaction.InputBox("Enter FTP password (visible input):", "FTP Password", _ftpPass, -1, -1);
-            }
-
-            _ftpUser = user ?? "";
-            _ftpPass = pass ?? "";
-
-            // Informational message -> log instead of MessageBox
-            Log("Remote path and credentials saved. Start the service to begin timed downloads.");
-
-            lblRemotePath.Text = _remotePath;
-            SaveSettingsToRegistry();
         }
 
         // Start button handler (designer wired to btnStart_Click_1)
@@ -507,6 +491,31 @@ namespace FTP_Grab
         {
             Application.Exit();
 
+        }
+
+        private void setToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Ask for optional credentials (leave blank for anonymous)
+            string user = Interaction.InputBox("Enter FTP username (leave blank for anonymous):", "FTP Username", _ftpUser, -1, -1);
+            string pass = "";
+            if (!string.IsNullOrEmpty(user))
+            {
+                pass = Interaction.InputBox("Enter FTP password (visible input):", "FTP Password", _ftpPass, -1, -1);
+            }
+
+            _ftpUser = user ?? "";
+            _ftpPass = pass ?? "";
+
+            // Informational message -> log instead of MessageBox
+            Log("Remote path and credentials saved. Start the service to begin timed downloads.");
+
+            lblRemotePath.Text = _remotePath;
+            SaveSettingsToRegistry();
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(Text + "\n\nDeveloped by Thomas O'Kane.\n\n© Integration Associates. All rights reserved.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
